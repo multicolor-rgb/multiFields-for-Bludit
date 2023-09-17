@@ -166,14 +166,13 @@ $url = $link; ?>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 <form class="form" <?php
-                    global $SITEURL;
-                    global $GSADMIN;
+
                     if (isset($_POST['creator'])) {
 
                         echo " action ='" . $link . "?&creator=" . $_POST['creator'] . "'";
                     }; ?> method="post">
 
-<input type="hidden" id="jstokenCSRF" name="tokenCSRF" value="<?php echo $tokenCSRF;?>">
+    <input type="hidden" id="jstokenCSRF" name="tokenCSRF" value="<?php echo $tokenCSRF; ?>">
 
     <div x-data="content">
 
@@ -182,12 +181,14 @@ $url = $link; ?>
         <h4><i x-text="selectPage"></i></h4>
 
         <select name="filename" style="padding:10px;background:#fafafa;border:solid 1px #ddd;width:100%;margin:10px 0;border-radius:5px;">
+            <option value="allmultifield">All</option>
             <?php foreach (glob(PATH_PAGES . '*', GLOB_ONLYDIR) as $file) {
                 $new = new Pages();
                 $filePure = pathinfo($file)['filename'];
+                $filePureSet = $filePure . '-settings';
                 $title = $new->db[$filePure]['title'];
                 echo $filePure;
-                echo '<option ' . ($_GET['creator'] == $filePure ? 'selected="selected"' : '') . ' value="' . $filePure . '">' . $title . '</option>';
+                echo '<option ' . ($_GET['creator'] ==   $filePureSet ? 'selected="selected"' : '') . ' value="' . $filePure . '">' . $title . '</option>';
             }; ?>
         </select>
 
@@ -204,7 +205,7 @@ $url = $link; ?>
             </select>
 
             <br>
-            <button @click.prevent="inputList.push({label:title,value:null,type:select}), title='title'+ count++, console.log(inputList)" x-html="buttonAdd"></button>
+            <button @click.prevent="inputList.unshift({ 'label': title, 'value': '', 'type': select });count++" x-html="buttonAdd"></button>
 
         </div>
 
@@ -256,8 +257,8 @@ $url = $link; ?>
         addNewInput: 'Add New Input',
         sureQuestion: 'are you sure you want delete this item?',
 
-        selectList: ["text", "textarea", "wysywig", "color", "date", "foto", "link"],
-        selectListLang: ["text", "textarea", "wysywig", "color", "date", "foto", "link"],
+        selectList: ["text", "textarea", "wysywig", "color", "date", "foto", "link", "checkbox", "dropdown"],
+        selectListLang: ["text", "textarea", "wysywig", "color", "date", "foto", "link", "checkbox", "dropdown"],
         inputList: <?php
 
                     if ($_GET['creator'] !== '') {
@@ -307,5 +308,3 @@ $url = $link; ?>
 <script>
 
 </script>
-
- 

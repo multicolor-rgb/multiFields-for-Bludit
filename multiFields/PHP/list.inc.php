@@ -72,25 +72,32 @@ $url = $link;
 
 <a href="<?php echo $url . '?&creator'; ?>" class="btn">Add New <img style="width:20px;filter:invert(100%);margin-left:5px;" src="<?php echo $thisDomainPath . "img/plus.svg"; ?>"></a>
 <a href="<?php echo $url . '?&migrate'; ?>" class="btn">Migrate <img style="width:18px;filter:invert(100%);margin-left:5px;" src="<?php echo $thisDomainPath . "img/web.svg"; ?>"></a>
+<a href="<?php echo $url . '?&howtouse'; ?>" class="btn">How to use <img style="width:18px;filter:invert(100%);margin-left:5px;" src="<?php echo $thisDomainPath . "img/web.svg"; ?>"></a>
 <hr>
 <ul class="multifield-list">
 
 
-    <?php foreach (glob($pathContent . '*.json') as $file) {
+    <?php foreach (glob($pathContent . '*-settings.json') as $file) {
 
-        $pureFile = pathinfo($file)['filename'];
 
         $new = new Pages();
-        $filePure = pathinfo($file)['filename'];
+        $filePure = str_replace('-settings', '', pathinfo($file)['filename']);
         @$title = $new->db[$filePure]['title'];
 
 
 
         echo '
 <li>
-<p>' . (@$title ? $title : 'Page no exist') . '</p>
-<div class="btns"><a href="' . $url . '?&creator=' . $filePure . '"> <img style="width:18px;;margin-left:5px;" src="' . $thisDomainPath . 'img/edit.svg"></a>
-<a href="' . $url . '?&delete=' . $filePure . '" onclick="return confirm(`are you sure you want delete this item`)"><img style="width:18px;;filter:invert(100%)" src="' . $thisDomainPath . 'img/trash.svg"></a></div>
+<p>';
+        if ($filePure == 'allmultifield') {
+            echo 'All';
+        } else {
+            echo  @$title ? $title : 'Page no exist';
+        };
+
+        echo '</p>
+<div class="btns"><a href="' . $url . '?&creator=' . $filePure . '-settings"> <img style="width:18px;;margin-left:5px;" src="' . $thisDomainPath . 'img/edit.svg"></a>
+<a href="' . $url . '?&delete=' . $filePure . '-settings" onclick="return confirm(`are you sure you want delete this item`)"><img style="width:18px;;filter:invert(100%)" src="' . $thisDomainPath . 'img/trash.svg"></a></div>
 </li>
 ';
     }; ?>

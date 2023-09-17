@@ -14,7 +14,7 @@ class multiField extends Plugin
 		$multiField = $_POST['multifield'];
 		$ars = array();
 		foreach ($multiField as $key => $value) {
-			$ars[$key] = ["label" => $multiFieldLabel[$key], "value" => htmlentities(htmlentities($value)), "type" => $multiFieldType[$key]];
+			$ars[$multiFieldLabel[$key]] = ["label" => $multiFieldLabel[$key], "value" => htmlentities(htmlentities($value)), "type" => $multiFieldType[$key]];
 		};
 		$final = json_encode($ars, true);
 		file_put_contents($file, $final);
@@ -47,13 +47,11 @@ class multiField extends Plugin
 				mkdir($pathContent, 0755);
 			}
 
-			file_put_contents($pathContent . $_POST['filename'] . '.json', $final);
 
-			global $SITEURL;
-			global $GSADMIN;
+			file_put_contents($pathContent . $_POST['filename'] . '-settings.json', $final);
 
 			echo ("<meta http-equiv='refresh' content='0'>");
-			echo "<script> window.location.href = '" . $link . "?&creator=" . $_POST['filename'] . "'</script>";
+			echo "<script> window.location.href = '" . $link . "?&creator=" . $_POST['filename'] . "-settings'</script>";
 		};
 
 
@@ -101,6 +99,8 @@ class multiField extends Plugin
 			include($thisPath . 'PHP/addNew.inc.php');
 		} elseif (isset($_GET['migrate'])) {
 			include($thisPath . 'PHP/migrate.inc.php');
+		} elseif (isset($_GET['howtouse'])) {
+			include($thisPath . 'PHP/howtouse.php');
 		} elseif (isset($_GET['browser'])) {
 			include($thisPath . 'PHP/imagebrowser.inc.php');
 		} else {
